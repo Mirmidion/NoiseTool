@@ -20,69 +20,16 @@ public class CustomNodeEditor : NodeEditor
             NoiseNode node = (NoiseNode) baseNode;
             if (node.noiseType == NoiseNode.NoiseType.Perlin)
             {
-
                 BasePerlinAttributes(node);
 
-                int seedMin = 1;
-                int seedMax = 20;
-                int tempSeed = EditorGUILayout.IntField("Seed", node.seed);
-                if (tempSeed != node.seed)
-                {
-                    node.TriggerOnValidate();
-                }
-                node.seed = Mathf.Min(Mathf.Max(tempSeed, seedMin), seedMax);
-
-                int octaveMin = 1;
-                int octaveMax = 20;
-                int tempOctaves = EditorGUILayout.IntField("Octaves", node.octaves);
-                if (tempOctaves != node.octaves)
-                {
-                    node.TriggerOnValidate();
-                }
-                node.octaves = Mathf.Min(Mathf.Max(tempOctaves, octaveMin), octaveMax);
-
-                float persistanceMin = 0.6f;
-                float persistanceMax = 0.9f;
-                float tempPersistance = EditorGUILayout.FloatField("Persistance", node.persistance);
-                if (tempPersistance != node.persistance)
-                {
-                    node.TriggerOnValidate();
-                }
-                node.persistance = Mathf.Min(Mathf.Max(tempPersistance, persistanceMin), persistanceMax);
-
-                float lacunarityMin = 0f;
-                float lacunarityMax = 100f;
-                float tempLacunarity = EditorGUILayout.FloatField("Lacunarity", node.lacunarity);
-                if (tempLacunarity != node.lacunarity)
-                {
-                    node.TriggerOnValidate();
-                }
-                node.lacunarity = Mathf.Min(Mathf.Max(tempLacunarity, lacunarityMin), lacunarityMax);
-
-                float amplitudeMin = 0f;
-                float amplitudeMax = 100f;
-                float tempAmplitude = EditorGUILayout.FloatField("Amplitude", node.amplitude);
-                if (tempAmplitude != node.amplitude)
-                {
-                    node.TriggerOnValidate();
-                }
-                node.amplitude = Mathf.Min(Mathf.Max(tempAmplitude, amplitudeMin), amplitudeMax);
-
-                float frequencyMin = 0f;
-                float frequencyMax = 100f;
-                float tempFrequency = EditorGUILayout.FloatField("Frequency", node.frequency);
-                if (tempFrequency != node.frequency)
-                {
-                    node.TriggerOnValidate();
-                }
-                node.frequency = Mathf.Min(Mathf.Max(tempFrequency, frequencyMin), frequencyMax);
-
-
-
+                CreateIntField(node, "seed", "seed", 1, 20);
+                CreateIntField(node, "octaves", "octaves", 1, 20);
+                CreateFloatField(node, "persistance", "persistance", 0.6f, 0.9f);
+                CreateFloatField(node, "lacunarity", "lacunarity", 0f, 100f);
+                CreateFloatField(node, "amplitude", "amplitude", 0f, 100f);
+                CreateFloatField(node, "frequency", "frequency", 0f, 100f);
 
                 NoisePreview(node, new Vector2(30, 275));
-
-
             }
             else if (node.noiseType == NoiseNode.NoiseType.Random)
             {
@@ -101,12 +48,8 @@ public class CustomNodeEditor : NodeEditor
             }
             else if (node.noiseType == NoiseNode.NoiseType.Simplex)
             {
-                float tempzOffset = EditorGUILayout.FloatField("Offset Z", node.zOrg);
-                if (tempzOffset != node.zOrg)
-                {
-                    node.TriggerOnValidate();
-                }
-                node.zOrg = tempzOffset;
+               
+                CreateFloatField(node, "zOrg", "Z Origin");
                 BasePerlinAttributes(node);
                 
                 NoisePreview(node, new Vector2(30, 155));
@@ -130,34 +73,9 @@ public class CustomNodeEditor : NodeEditor
                     node.TriggerOnValidate();
                 }
                 
-
-                int seedMin = 1;
-                int seedMax = 20;
-                int tempSeed = EditorGUILayout.IntField("Seed", node.seed);
-                if (tempSeed != node.seed)
-                {
-                    node.TriggerOnValidate();
-                }
-                node.seed = Mathf.Min(Mathf.Max(tempSeed, seedMin), seedMax);
-
-                float amplitudeMin = 0f;
-                float amplitudeMax = 100f;
-                float tempAmplitude = EditorGUILayout.FloatField("Amplitude", node.amplitude);
-                if (tempAmplitude != node.amplitude)
-                {
-                    node.TriggerOnValidate();
-                }
-                node.amplitude = Mathf.Min(Mathf.Max(tempAmplitude, amplitudeMin), amplitudeMax);
-
-                float frequencyMin = 0f;
-                float frequencyMax = 100f;
-                float tempFrequency = EditorGUILayout.FloatField("Frequency", node.frequency);
-                if (tempFrequency != node.frequency)
-                {
-                    node.TriggerOnValidate();
-                }
-                node.frequency = Mathf.Min(Mathf.Max(tempFrequency, frequencyMin), frequencyMax);
-
+                CreateIntField(node, "seed", "seed", 1,20);
+                CreateFloatField(node, "amplitude", "amplitude",1f, 100f);
+                CreateFloatField(node, "frequency", "frequency");
 
                 NoisePreview(node, new Vector2(30, 195));
 
@@ -212,14 +130,7 @@ public class CustomNodeEditor : NodeEditor
             }
             else if (node.selectedMode == AddNode.mode.Shift)
             {
-                float offsetMin = 0f;
-                float offsetMax = 1f;
-                float tempOffset = EditorGUILayout.FloatField("Offset", node.offset);
-                if (tempOffset != node.offset)
-                {
-                    node.TriggerOnValidate();
-                }
-                node.offset = Mathf.Min(Mathf.Max(tempOffset, offsetMin), offsetMax);
+                CreateFloatField(node, "offset", "offset",0f, 1f);
 
                 if (node.noise != null)
                 {
@@ -234,20 +145,30 @@ public class CustomNodeEditor : NodeEditor
         }
     }
 
-    public void CreateFloatField(AddNode node, string fieldName, float min, float max)
+    public void CreateFloatField(Node node, string fieldName, string diplayName, float min = -1000f, float max = 1000f)
     {
-        float preValue = (float) node.GetType().GetProperty(fieldName).GetValue(node);
-        float tempOffset = EditorGUILayout.FloatField("Offset", preValue);
-        if (tempOffset != (float) node.GetType().GetProperty(fieldName).GetValue(node))
+        float preValue = (float) node.GetType().GetField(fieldName).GetValue(node);
+        float tempOffset = EditorGUILayout.FloatField(fieldName.Substring(0,1).ToUpper() + fieldName.Substring(1), preValue);
+        if (tempOffset != (float)node.GetType().GetField(fieldName).GetValue(node))
         {
             node.TriggerOnValidate();
         }
-        node.GetType().GetProperty(fieldName).SetValue(node, Mathf.Min(Mathf.Max(tempOffset, min), max));
+        node.GetType().GetField(fieldName).SetValue(node, Mathf.Min(Mathf.Max(tempOffset, min), max));
     }
 
-   void AddDynamicPorts(AddNode node)
+    public void CreateIntField(Node node, string fieldName, string diplayName, int min = -1000, int max = 1000)
     {
-        
+        int preValue = (int)node.GetType().GetField(fieldName).GetValue(node);
+        int tempOffset = EditorGUILayout.IntField(fieldName.Substring(0, 1).ToUpper() + fieldName.Substring(1), preValue);
+        if (tempOffset != (int)node.GetType().GetField(fieldName).GetValue(node))
+        {
+            node.TriggerOnValidate();
+        }
+        node.GetType().GetField(fieldName).SetValue(node, Mathf.Min(Mathf.Max(tempOffset, min), max));
+    }
+
+    void AddDynamicPorts(AddNode node)
+    {
         
         bool noise = false;
         bool noise1 = false;
