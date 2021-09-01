@@ -6,16 +6,19 @@ using XNode;
 public class NoiseNode : Node
 {
     // The value of an output node field is not used for anything, but could be used for caching output results
-    [HideInInspector]
-    public Texture2D noise;
-    [Output] public Color[] pixels;
+    [Output] public Texture2D noise;
+
+    [Input] public Vector3 inputPoint;
+    [Output] public Vector4[] outputPoint;
+
+    Color[] pixels;
 
     // The value of 'mathType' will be displayed on the node in an editable format, similar to the inspector
     public NoiseType noiseType = NoiseType.Perlin;
-    public enum NoiseType { Random, RawPerlin, Perlin, Simplex, Voronoi }
+    public enum NoiseType { Random, RawPerlin, Perlin, Rigid, Simplex, Voronoi }
     
-    int width = 100;
-    int height = 100;
+    int width = 150;
+    int height = 150;
 
     [HideInInspector]
     public float xOrg = 0.0f;
@@ -44,16 +47,105 @@ public class NoiseNode : Node
     public float frequency = 1;
 
     [HideInInspector]
+    public float weightMultiplier = .8f, strength = 1, baseRoughness = 1, roughness = 2, minValue;
+    [Range(1, 8), HideInInspector]
+    public int numLayers = 1;
+    
+
+    [HideInInspector]
     public VoronoiNoise.VORONOI_DISTANCE distanceMode;
 
     [HideInInspector]
     public VoronoiNoise.VORONOI_COMBINATION combinationMode;
 
+    float delay = 0;
+
+    /* ----- || ----- \\
+    
+    Variables for getting a value when generating a planet
+
+    \\ ----- || ----- */
+
+
+    [HideInInspector]
+    public float posX, posY;
+
+
+
+    /* ----- || ----- \\
+    
+
+
+    \\ ----- || ----- */
+
+    public void GenerateValueAt(Vector2 coordinates)
+    {
+        SetPositionForAllNoiseNodes(coordinates.x, coordinates.y);
+        float noiseValue;
+    }
+
+    public void GenerateValueAt()
+    {
+
+    }
+
+    public void SetPositionForAllNoiseNodes(float posX, float posY)
+    {
+        foreach(Node node in graph.nodes)
+        {
+            if (node.GetType() == typeof(NoiseNode))
+            {
+                NoiseNode noiseNode = (NoiseNode) node;
+                noiseNode.posX = posX;
+                noiseNode.posY = posY;
+            }
+        }
+    }
+
     private void OnValidate()
+    {
+        if (Time.time - delay > 0.02f)
+        {
+            Generate();
+            delay = Time.time;
+        }
+    }
+
+    public void TriggerValidate()
+    {
+        OnValidate();
+    }
+
+    public void RegenerateBranch()
+    {
+        foreach (NodePort childPort in GetOutputPort("noise").GetConnections())
+        {
+            if (childPort.IsInput)
+            {
+                Node node = childPort.node;
+
+                if (node.GetType() == typeof(ProcessNode))
+                {
+                    ProcessNode node1 = (ProcessNode)node;
+                    node1.TriggerValidate();
+                    node1.RegenerateBranch();
+                }
+                else if (node.GetType() == typeof(NoiseNode))
+                {
+                    NoiseNode node1 = (NoiseNode)node;
+                    node1.TriggerValidate();
+                    node1.RegenerateBranch();
+                }
+            }
+        }
+    }
+
+    public void GenerateNoise()
     {
         switch (noiseType)
         {
             case NoiseType.Random:
+            default:
                 {
                     RandomNoise();
                     break;
@@ -68,6 +160,11 @@ public class NoiseNode : Node
                     PerlinNoise();
                     break;
                 }
+            case NoiseType.Rigid:
+                {
+                    RigidNoise();
+                    break;
+                }
             case NoiseType.Simplex:
                 {
                     SimplexNoiseGenerator();
@@ -80,6 +177,11 @@ public class NoiseNode : Node
                 }
 
         }
+    }
+
+    public void Generate()
+    {
+        GenerateNoise();
         noise.SetPixels(pixels);
         noise.Apply();
     }
@@ -90,39 +192,14 @@ public class NoiseNode : Node
 
 
         // After you've gotten your input values, you can perform your calculations and return a value
-        if (port.fieldName == "pixels") { 
-            switch (noiseType)
-            {
-                case NoiseType.Random: default:
-                    {
-                        RandomNoise();
-                        break;
-                    }
-                case NoiseType.RawPerlin:
-                    {
-                        RawPerlinNoise();
-                        break;
-                    }
-                case NoiseType.Perlin:
-                    {
-                        PerlinNoise();
-                        break;
-                    }
-                case NoiseType.Simplex:
-                    {
-                        SimplexNoiseGenerator();
-                        break;
-                    }
-                case NoiseType.Voronoi:
-                    {
-                        VoronoiNoiseGenerator();
-                        break;
-                    }
-
-            }
-        noise.SetPixels(pixels);
-        noise.Apply();
-        return pixels;
+        if (port.fieldName == "pixels") {
+            Generate();
+            return pixels;
+        }
+        else if (port.fieldName.Equals("noise"))
+        {
+            Generate();
+            return noise;
         }
         //else if (port.fieldName == "sum") return a + b;
         else return 0f;
@@ -240,6 +317,42 @@ public class NoiseNode : Node
         }
     }
 
+    public void RigidNoise()
+    {
+        noise = new Texture2D(width, height, TextureFormat.RGB24, false);
+        pixels = new Color[width * height];
+        for (int y = 0; y < width; y++)
+        {
+            for (int x = 0; x < height; x++)
+            {
+                float noiseValue = 0;
+                float frequency = baseRoughness;
+                float amplitude = 1;
+                float weight = 1;
+
+                for (int i = 0; i < numLayers; i++)
+                {
+                    Noise noiseFunction = new Noise();
+                    float v = 1 - Mathf.Abs(noiseFunction.Evaluate(new Vector3(x+xOrg,y+yOrg,0) * frequency));
+                    v *= v;
+                    v *= weight;
+                    weight = Mathf.Clamp01(v * weightMultiplier);
+
+                    noiseValue += v * amplitude;
+                    frequency *= roughness;
+                    amplitude *= persistance;
+                }
+
+                noiseValue = noiseValue - minValue;
+                float value = noiseValue * strength;
+                pixels[y * noise.width + x] = new Color(value, value, value);
+
+
+            }
+        }
+        
+    }
+
     public void SimplexNoiseGenerator()
     {
         noise = new Texture2D(width, height, TextureFormat.RGB24, false);
@@ -262,8 +375,6 @@ public class NoiseNode : Node
                 pixels[y * noise.width + x] = new Color(sample, sample, sample);
             }
         }
-        Debug.Log(lowest);
-        Debug.Log(highest);
     }
 
     public void VoronoiNoiseGenerator()

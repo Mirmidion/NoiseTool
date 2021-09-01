@@ -29,7 +29,7 @@ public class CustomNodeEditor : NodeEditor
                 CreateFloatField(node, "amplitude", "amplitude", 0f, 100f);
                 CreateFloatField(node, "frequency", "frequency", 0f, 100f);
 
-                NoisePreview(node, new Vector2(30, 275));
+                NoisePreview(node, new Vector2(30, 330));
             }
             else if (node.noiseType == NoiseNode.NoiseType.Random)
             {
@@ -37,23 +37,37 @@ public class CustomNodeEditor : NodeEditor
                 {
                     node.TriggerOnValidate();
                 }
-                NoisePreview(node, new Vector2(30, 115));
+                NoisePreview(node, new Vector2(30, 165));
             }
             else if (node.noiseType == NoiseNode.NoiseType.RawPerlin)
             {
 
                 BasePerlinAttributes(node);
-                NoisePreview(node, new Vector2(30, 155));
+                NoisePreview(node, new Vector2(30, 210));
 
             }
             else if (node.noiseType == NoiseNode.NoiseType.Simplex)
             {
                
-                CreateFloatField(node, "zOrg", "Z Origin");
+                //CreateFloatField(node, "zOrg", "Z Origin");
+                
                 BasePerlinAttributes(node);
                 
-                NoisePreview(node, new Vector2(30, 155));
+                NoisePreview(node, new Vector2(30, 210));
 
+            }
+            else if (node.noiseType == NoiseNode.NoiseType.Rigid)
+            {
+                BasePerlinAttributes(node);
+                CreateFloatField(node, "minValue", "minValue");
+                CreateFloatField(node, "roughness", "roughness");
+                CreateFloatField(node, "baseRoughness", "baseRoughness");
+                CreateFloatField(node, "strength", "strength");
+                CreateFloatField(node, "weightMultiplier", "weightMultiplier");
+                CreateFloatField(node, "persistance", "persistance");
+                CreateIntField(node, "numLayers", "numLayers", 1, 8);
+
+                NoisePreview(node, new Vector2(30, 350));
             }
             else if (node.noiseType == NoiseNode.NoiseType.Voronoi)
             {
@@ -62,7 +76,7 @@ public class CustomNodeEditor : NodeEditor
                 if (!tempEnum.Equals(node.combinationMode))
                 {
                     node.combinationMode = tempEnum;
-                    node.TriggerOnValidate();
+                    Revalidate(node);
                 }
                 
 
@@ -70,29 +84,34 @@ public class CustomNodeEditor : NodeEditor
                 if (!tempEnum2.Equals(node.distanceMode))
                 {
                     node.distanceMode = tempEnum2;
-                    node.TriggerOnValidate();
+                    Revalidate(node);
                 }
                 
                 CreateIntField(node, "seed", "seed", 1,20);
                 CreateFloatField(node, "amplitude", "amplitude",1f, 100f);
                 CreateFloatField(node, "frequency", "frequency");
 
-                NoisePreview(node, new Vector2(30, 195));
+                NoisePreview(node, new Vector2(30, 250));
 
             }
+            if(GUILayout.Button("Regenerate branch"))
+            {
+                node.RegenerateBranch();
+            }
         }
-        else if (baseNode.GetType() == typeof(AddNode))
+        
+        else if (baseNode.GetType() == typeof(ProcessNode))
         {
-            AddNode node = (AddNode) baseNode;
+            ProcessNode node = (ProcessNode) baseNode;
             
-            if (node.selectedMode == AddNode.mode.Add)
+            if (node.selectedMode == ProcessNode.mode.Add)
             {
                 int weight1Min = 0;
                 int weight1Max = 100;
                 int tempWeight1 = EditorGUILayout.IntField("Noise 1 Weight", node.noise1Weight);
                 if (tempWeight1 != node.noise1Weight)
                 {
-                    node.TriggerOnValidate();
+                    Revalidate(node);
                 }
 
 
@@ -101,7 +120,7 @@ public class CustomNodeEditor : NodeEditor
                 int tempWeight2 = EditorGUILayout.IntField("Noise 2 Weight", node.noise2Weight);
                 if (tempWeight2 != node.noise2Weight)
                 {
-                    node.TriggerOnValidate();
+                    Revalidate(node);
                 }
 
                 if (tempWeight1 + tempWeight2 != 100)
@@ -125,10 +144,10 @@ public class CustomNodeEditor : NodeEditor
                     {
                         EditorGUILayout.Space();
                     }
-                    EditorGUI.DrawPreviewTexture(new Rect(new Vector2(30, 155), new Vector2(150, 150)), node.noise);
+                    EditorGUI.DrawPreviewTexture(new Rect(new Vector2(30, 230), new Vector2(150, 150)), node.noise);
                 }
             }
-            else if (node.selectedMode == AddNode.mode.Shift)
+            else if (node.selectedMode == ProcessNode.mode.Shift)
             {
                 CreateFloatField(node, "offset", "offset",0f, 1f);
 
@@ -138,10 +157,272 @@ public class CustomNodeEditor : NodeEditor
                     {
                         EditorGUILayout.Space();
                     }
-                    EditorGUI.DrawPreviewTexture(new Rect(new Vector2(30, 155), new Vector2(150, 150)), node.noise);
+                    EditorGUI.DrawPreviewTexture(new Rect(new Vector2(30, 190), new Vector2(150, 150)), node.noise);
                 }
             }
+            else if (node.selectedMode == ProcessNode.mode.MinMax)
+            {
+                CreateFloatField(node, "min", "min",0f,1f);
+                CreateFloatField(node, "max", "max", 0f, 1f);
+
+                
+
+                if (node.noise != null)
+                {
+                    for (int spaces = 0; spaces < 30; spaces++)
+                    {
+                        EditorGUILayout.Space();
+                    }
+                    EditorGUI.DrawPreviewTexture(new Rect(new Vector2(30, 210), new Vector2(150, 150)), node.noise);
+                }
+            }
+            else if (node.selectedMode == ProcessNode.mode.Scale)
+            {
+                CreateFloatField(node, "scaleFirstHalf", "scaleFirstHalf", 0f, 2f);
+                CreateFloatField(node, "scaleSecondHalf", "scaleSecondHalf", 0f, 2f);
+
+                if (GUILayout.Button("Reset"))
+                {
+                    node.scaleFirstHalf = 1f;
+                    node.scaleSecondHalf = 1f;
+                    Revalidate(node);
+                }
+
+                if (node.noise != null)
+                {
+                    for (int spaces = 0; spaces < 30; spaces++)
+                    {
+                        EditorGUILayout.Space();
+                    }
+                    EditorGUI.DrawPreviewTexture(new Rect(new Vector2(30, 230), new Vector2(150, 150)), node.noise);
+                }
+            }
+            else if (node.selectedMode == ProcessNode.mode.Maximize)
+            {
+                if (node.noise != null)
+                {
+                    for (int spaces = 0; spaces < 30; spaces++)
+                    {
+                        EditorGUILayout.Space();
+                    }
+                    EditorGUI.DrawPreviewTexture(new Rect(new Vector2(30, 170), new Vector2(150, 150)), node.noise);
+                }
+            }
+            else if (node.selectedMode == ProcessNode.mode.Interpolate)
+            {
+                    if (node.noise != null)
+                    {
+                        for (int spaces = 0; spaces < 30; spaces++)
+                        {
+                            EditorGUILayout.Space();
+                        }
+                        EditorGUI.DrawPreviewTexture(new Rect(new Vector2(30, 170), new Vector2(150, 150)), node.noise);
+                    }
+            }
+            //else if (node.selectedMode == AddNode.mode.Multiply)
+            //{
+            //    CreateIntField(node, "size", "size", 0,10);
+            //    AddNode.Multiplier[] preValue = (AddNode.Multiplier[])node.GetType().GetField("multipliers").GetValue(node);
+            //    AddNode.Multiplier[] outputValue = new AddNode.Multiplier[(int)node.GetType().GetField("size").GetValue(node)];
+            //    int counter = 0;
+            //    if (preValue != null)
+            //    {
+            //        foreach (AddNode.Multiplier multiplier in preValue)
+            //        {
+            //            if (counter == outputValue.Length)
+            //            {
+            //                break;
+            //            }
+            //            outputValue[counter] = new AddNode.Multiplier();
+            //            if (multiplier != null)
+            //            {
+            //                outputValue[counter].multiplier = multiplier.multiplier;
+            //                outputValue[counter].from = multiplier.from;
+            //                outputValue[counter].to = multiplier.to;
+            //            }
+            //            EditorGUILayout.LabelField("Multiplier " + (counter+1));
+            //            outputValue[counter].multiplier = EditorGUILayout.FloatField("Multiplier:", outputValue[counter].multiplier);
+            //            outputValue[counter].from = EditorGUILayout.FloatField("From:",outputValue[counter].from);
+            //            outputValue[counter].to = EditorGUILayout.FloatField("To:", outputValue[counter].to);
+            //            counter++;
+            //        }
+            //    }
+            //    if (outputValue != (AddNode.Multiplier[])node.GetType().GetField("multipliers").GetValue(node))
+            //    {
+            //        Revalidate(node);
+            //    }
+            //    node.GetType().GetField("multipliers").SetValue(node, outputValue);
+
+            //    if (node.noise != null)
+            //    {
+            //        for (int spaces = 0; spaces < 30; spaces++)
+            //        {
+            //            EditorGUILayout.Space();
+            //        }
+            //        EditorGUI.DrawPreviewTexture(new Rect(new Vector2(30, 175+(counter*45)), new Vector2(150, 150)), node.noise);
+            //    }
+            //}
             AddDynamicPorts(node);
+            if (GUILayout.Button("Regenerate branch"))
+            {
+                node.RegenerateBranch();
+            }
+        }
+        else if (baseNode.GetType() == typeof(SerializeNode))
+        {
+            SerializeNode node = (SerializeNode)baseNode;
+            if (GUILayout.Button("Serialize"))
+            {
+                node.Serialize();
+            }
+            if (node.noise != null)
+            {
+                for (int spaces = 0; spaces < 30; spaces++)
+                {
+                    EditorGUILayout.Space();
+                }
+                EditorGUI.DrawPreviewTexture(new Rect(new Vector2(30, 95), new Vector2(150, 150)), node.noise);
+            }
+        }
+    }
+
+    public void SinglePointInput(Node node, bool single, bool dual)
+    {
+        if (!single && !node.HasPort("Input Port"))
+        {
+            NodePort temp = node.AddDynamicInput(typeof(Vector4[]), Node.ConnectionType.Multiple, Node.TypeConstraint.None, "Input Port");
+            inputList.Add(temp);
+        }
+        if (dual)
+        {
+            node.RemoveDynamicPort("Input Port 1");
+            int index = -1;
+            foreach (NodePort i in inputList)
+            {
+                if (i.fieldName.Equals("Input Port 1"))
+                {
+                    index = inputList.IndexOf(i);
+                }
+            }
+            if (index != -1)
+            {
+                inputList.RemoveAt(index);
+            }
+
+            node.RemoveDynamicPort("Input Port 2");
+            index = -1;
+            foreach (NodePort i in inputList)
+            {
+                if (i.fieldName.Equals("Input Port 2"))
+                {
+                    index = inputList.IndexOf(i);
+                }
+            }
+            if (index != -1)
+            {
+                inputList.RemoveAt(index);
+            }
+        }
+    }
+
+    public void DoublePointInput(Node node, bool single, bool dual)
+    {
+        if (single)
+        {
+            node.RemoveDynamicPort("Input Port");
+            int index = -1;
+            foreach (NodePort i in inputList)
+            {
+                if (i.fieldName.Equals("Input Port"))
+                {
+                    index = inputList.IndexOf(i);
+                }
+            }
+            if (index != -1)
+            {
+                inputList.RemoveAt(index);
+            }
+        }
+        if (!dual && !node.HasPort("Input Port 1") )
+        {
+            NodePort temp = node.AddDynamicInput(typeof(Vector4[]), Node.ConnectionType.Multiple, Node.TypeConstraint.None, "Input Port 1");
+            inputList.Add(temp);
+        }
+        if (!dual &&  !node.HasPort("Input Port 2"))
+        {
+            NodePort temp1 = node.AddDynamicInput(typeof(Vector4[]), Node.ConnectionType.Multiple, Node.TypeConstraint.None, "Input Port 2");
+            inputList.Add(temp1);
+        }
+    }
+
+    public void SingleNoiseInput(Node node, bool noise, bool noise1, bool noise2)
+    {
+        if (!noise && !node.HasPort("Noise"))
+        {
+            NodePort temp = node.AddDynamicInput(typeof(Texture2D), Node.ConnectionType.Multiple, Node.TypeConstraint.None, "Noise");
+            inputList.Add(temp);
+        }
+        if (noise1)
+        {
+            node.RemoveDynamicPort("Noise1");
+            int index = -1;
+            foreach (NodePort i in inputList)
+            {
+                if (i.fieldName.Equals("Noise1"))
+                {
+                    index = inputList.IndexOf(i);
+                }
+            }
+            if (index != -1)
+            {
+                inputList.RemoveAt(index);
+            }
+        }
+        else if (noise2)
+        {
+            node.RemoveDynamicPort("Noise2");
+            int index = -1;
+            foreach (NodePort i in inputList)
+            {
+                if (i.fieldName.Equals("Noise2"))
+                {
+                    index = inputList.IndexOf(i);
+                }
+            }
+            if (index != -1)
+            {
+                inputList.RemoveAt(index);
+            }
+        }
+    }
+
+    public void TwoNoiseInputs(Node node, bool noise, bool noise1, bool noise2)
+    {
+        if (noise)
+        {
+            node.RemoveDynamicPort("Noise");
+            int index = -1;
+            foreach (NodePort i in inputList)
+            {
+                if (i.fieldName.Equals("Noise"))
+                {
+                    index = inputList.IndexOf(i);
+                }
+            }
+            if (index != -1)
+            {
+                inputList.RemoveAt(index);
+            }
+        }
+        if (!noise1 && !node.HasPort("Noise1"))
+        {
+            NodePort temp = node.AddDynamicInput(typeof(Texture2D), Node.ConnectionType.Multiple, Node.TypeConstraint.None, "Noise1");
+            inputList.Add(temp);
+        }
+        if (!noise2 && !node.HasPort("Noise2"))
+        {
+            NodePort temp = node.AddDynamicInput(typeof(Texture2D), Node.ConnectionType.Multiple, Node.TypeConstraint.None, "Noise2");
+            inputList.Add(temp);
         }
     }
 
@@ -151,7 +432,7 @@ public class CustomNodeEditor : NodeEditor
         float tempOffset = EditorGUILayout.FloatField(fieldName.Substring(0,1).ToUpper() + fieldName.Substring(1), preValue);
         if (tempOffset != (float)node.GetType().GetField(fieldName).GetValue(node))
         {
-            node.TriggerOnValidate();
+            Revalidate(node);
         }
         node.GetType().GetField(fieldName).SetValue(node, Mathf.Min(Mathf.Max(tempOffset, min), max));
     }
@@ -162,12 +443,12 @@ public class CustomNodeEditor : NodeEditor
         int tempOffset = EditorGUILayout.IntField(fieldName.Substring(0, 1).ToUpper() + fieldName.Substring(1), preValue);
         if (tempOffset != (int)node.GetType().GetField(fieldName).GetValue(node))
         {
-            node.TriggerOnValidate();
+            Revalidate(node);
         }
         node.GetType().GetField(fieldName).SetValue(node, Mathf.Min(Mathf.Max(tempOffset, min), max));
     }
 
-    void AddDynamicPorts(AddNode node)
+    void AddDynamicPorts(ProcessNode node)
     {
         
         bool noise = false;
@@ -197,77 +478,77 @@ public class CustomNodeEditor : NodeEditor
 
         switch (node.selectedMode)
         {
-            case AddNode.mode.Add:
+            case ProcessNode.mode.Add:
                 {
-                    if (noise)
-                    {
-                        node.RemoveDynamicPort("Noise");
-                        int index = -1;
-                        foreach (NodePort i in inputList)
-                        {
-                            if (i.fieldName.Equals("Noise"))
-                            {
-                                index = inputList.IndexOf(i);
-                            }
-                        }
-                        if (index != -1)
-                        {
-                            inputList.RemoveAt(index);
-                        }
-                    }
-                    if (!noise1)
-                    {
-                        NodePort temp = node.AddDynamicInput(typeof(Color[]), Node.ConnectionType.Multiple, Node.TypeConstraint.None, "Noise1");
-                        inputList.Add(temp);
-                    }
-                    if (!noise2)
-                    {
-                        NodePort temp = node.AddDynamicInput(typeof(Color[]), Node.ConnectionType.Multiple, Node.TypeConstraint.None, "Noise2");
-                        inputList.Add(temp);
-                    }
+                    TwoNoiseInputs(node, noise,noise1,noise2);
                     break;
                 }
-            case AddNode.mode.Shift:
+            case ProcessNode.mode.Shift:
                 {
-                    if (!noise)
-                    {
-                        NodePort temp = node.AddDynamicInput(typeof(Color[]), Node.ConnectionType.Multiple, Node.TypeConstraint.None, "Noise");
-                        inputList.Add(temp);
-                    }
-                    if (noise1)
-                    {
-                        node.RemoveDynamicPort("Noise1");
-                        int index = -1;
-                        foreach (NodePort i in inputList)
-                        {
-                            if (i.fieldName.Equals("Noise1"))
-                            {
-                                index = inputList.IndexOf(i);
-                            }
-                        }
-                        if (index != -1)
-                        {
-                            inputList.RemoveAt(index);
-                        }
-                    }
-                    if (noise2)
-                    {
-                        node.RemoveDynamicPort("Noise2");
-                        int index = -1;
-                        foreach (NodePort i in inputList)
-                        {
-                            if (i.fieldName.Equals("Noise2"))
-                            {
-                                index = inputList.IndexOf(i);
-                            }
-                        }
-                        if (index != -1)
-                        {
-                            inputList.RemoveAt(index);
-                        }
-                    }
+                    SingleNoiseInput(node, noise, noise1, noise2);
                     break;
                 }
+            case ProcessNode.mode.MinMax:
+                {
+                    SingleNoiseInput(node, noise, noise1, noise2);
+                    break;
+                }
+            case ProcessNode.mode.Scale:
+                {
+                    SingleNoiseInput(node, noise, noise1, noise2);
+                    break;
+                }
+            case ProcessNode.mode.Maximize:
+                {
+                    SingleNoiseInput(node, noise, noise1, noise2);
+                    break;
+                }
+            case ProcessNode.mode.Interpolate:
+                {
+                    SingleNoiseInput(node, noise, noise1, noise2);
+                    break;
+                }
+                //case AddNode.mode.Multiply:
+                //    {
+                //        if (!noise && !node.HasPort("Noise"))
+                //        {
+                //            NodePort temp = node.AddDynamicInput(typeof(Color[]), Node.ConnectionType.Multiple, Node.TypeConstraint.None, "Noise");
+                //            inputList.Add(temp);
+                //        }
+                //        if (noise1)
+                //        {
+                //            node.RemoveDynamicPort("Noise1");
+                //            int index = -1;
+                //            foreach (NodePort i in inputList)
+                //            {
+                //                if (i.fieldName.Equals("Noise1"))
+                //                {
+                //                    index = inputList.IndexOf(i);
+                //                }
+                //            }
+                //            if (index != -1)
+                //            {
+                //                inputList.RemoveAt(index);
+                //            }
+                //        }
+                //        else if (noise2)
+                //        {
+                //            node.RemoveDynamicPort("Noise2");
+                //            int index = -1;
+                //            foreach (NodePort i in inputList)
+                //            {
+                //                if (i.fieldName.Equals("Noise2"))
+                //                {
+                //                    index = inputList.IndexOf(i);
+                //                }
+                //            }
+                //            if (index != -1)
+                //            {
+                //                inputList.RemoveAt(index);
+                //            }
+                //        }
+                //        break;
+                //    }
         }
        
         
@@ -327,6 +608,15 @@ public class CustomNodeEditor : NodeEditor
                 EditorGUILayout.Space();
             }
             EditorGUI.DrawPreviewTexture(new Rect(position, new Vector2(150, 150)), node.noise);
+        }
+    }
+
+    public void Revalidate(Node node)
+    {
+        node.TriggerOnValidate();
+        foreach (NodePort child in node.DynamicOutputs)
+        {
+            
         }
     }
 }
