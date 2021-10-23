@@ -1,0 +1,123 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-5682414246928799222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cc5c63e7716a7c4693f27c7ad531da4, type: 3}
+  m_Name: Input
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -428.7448, y: -344.2384}
+  ports:
+    keys:
+    - point
+    values:
+    - _fieldName: point
+      _node: {fileID: -5682414246928799222}
+      _typeQualifiedName: UnityEngine.Vector3, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: inputPoint
+        node: {fileID: -3116951278596298198}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  input: {x: 1.79, y: 0, z: 0}
+  point: {x: 0, y: 0, z: 0}
+--- !u!114 &-3116951278596298198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4d3c8fc911978e4e9ab8cbe7a011c16, type: 3}
+  m_Name: Noise
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -107.257195, y: -315.16772}
+  ports:
+    keys:
+    - noise
+    - inputPoint
+    - outputPoint
+    values:
+    - _fieldName: noise
+      _node: {fileID: -3116951278596298198}
+      _typeQualifiedName: UnityEngine.Texture2D, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: inputPoint
+      _node: {fileID: -3116951278596298198}
+      _typeQualifiedName: UnityEngine.Vector3, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections:
+      - fieldName: point
+        node: {fileID: -5682414246928799222}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: outputPoint
+      _node: {fileID: -3116951278596298198}
+      _typeQualifiedName: UnityEngine.Vector4[], UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      connections: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  noise: {fileID: 0}
+  inputPoint: {x: 0, y: 0, z: 0}
+  outputPoint: []
+  noiseType: 0
+  xOrg: 0
+  yOrg: 0
+  zOrg: 0
+  scale: 1
+  seed: 10
+  octaves: 10
+  persistance: 0.9
+  lacunarity: 1
+  amplitude: 1
+  frequency: 1
+  weightMultiplier: 0.8
+  strength: 1
+  baseRoughness: 1
+  roughness: 2
+  minValue: 0
+  numLayers: 1
+  distanceMode: 0
+  combinationMode: 0
+  posX: 0
+  posY: 0
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3e0e10fc5c30d6469e34b2130c13be6, type: 3}
+  m_Name: New Noise Graph View 1
+  m_EditorClassIdentifier: 
+  nodes:
+  - {fileID: -3116951278596298198}
+  - {fileID: -5682414246928799222}

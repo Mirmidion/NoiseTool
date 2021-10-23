@@ -16,6 +16,7 @@ public class ProcessNode : Node
     [Output] public Vector4[] outputPoint;
 
     Color[] pixels;
+    private Vector4[] output;
 
     public enum mode { Add, Shift, MinMax, Scale, Maximize, Interpolate }
     public mode selectedMode;
@@ -82,11 +83,53 @@ public class ProcessNode : Node
         }
     }
 
+    public void Process3D()
+    {
+        switch (selectedMode)
+        {
+            default:
+            {
+                Add3DNoises();
+                break;
+            }
+            case mode.Shift:
+            {
+                //ShiftNoise();
+                break;
+            }
+            case mode.MinMax:
+            {
+                //MinMaxNoise();
+                break;
+            }
+            case mode.Scale:
+            {
+                //ScaleNoise();
+                break;
+            }
+            case mode.Maximize:
+            {
+                Maximize3DNoises();
+                break;
+            }
+            case mode.Interpolate:
+            {
+                //Interpolate();
+                break;
+            }
+        }
+    }
+
     public void Generate()
     {
         Process();
         noise.SetPixels(pixels);
         noise.Apply();
+    }
+
+    public void Generate3D()
+    {
+        Process3D();
     }
 
     public override object GetValue(NodePort port)
@@ -99,24 +142,23 @@ public class ProcessNode : Node
             }
             return noise;
         }
-        else
+
+        if (port.fieldName == "outputPort")
         {
-            return new Color[2];
+            Generate3D();
+            return output;
         }
+        
+        return new Color[2];
     }
 
     private void OnValidate()
     {
-        
         if (Time.time - delay > 0.02f)
         {
             Generate();
             delay = Time.time;
         }
-
-        
-            
-        
     }
 
     public void TriggerValidate()
@@ -148,16 +190,15 @@ public class ProcessNode : Node
         }
     }
 
-
     public void AddNoises()
     {
-        Texture2D a = GetInputValue<Texture2D>("Noise1");
-        Texture2D b = GetInputValue<Texture2D>("Noise2");
+        Texture2D noiseMap = GetInputValue<Texture2D>("Noise1");
+        Texture2D noiseMapToAdd = GetInputValue<Texture2D>("Noise2");
         
-        if (a != null && b != null)
+        if (noiseMap != null && noiseMapToAdd != null)
         {
-            Color[] aColors = a.GetPixels();
-            Color[] bColors = b.GetPixels();
+            Color[] aColors = noiseMap.GetPixels();
+            Color[] bColors = noiseMapToAdd.GetPixels();
             for (int y = 0; y < width; y++)
             {
                 for (int x = 0; x < height; x++)
@@ -169,15 +210,27 @@ public class ProcessNode : Node
         }
     }
 
+    public void Add3DNoises()
+    {
+        Vector4[] worldSpacePoints = GetInputValue<Vector4[]>("inputPoint");
+        Vector4[] worldSpacePointsToAdd = GetInputValue<Vector4[]>("inputPoint2");
+        if (worldSpacePoints != null && worldSpacePointsToAdd != null)
+        {
+            for (int i = 0; i < worldSpacePoints.Length; i++)
+            {
+                output = worldSpacePoints;
+                output[i].w = (output[i].w + worldSpacePointsToAdd[i].w) / 2f;
+            }
+        }
+    }
+
     public void Maximize()
     {
-        Texture2D a = GetInputValue<Texture2D>("Noise");
-        Color[] getPixels = a.GetPixels();
-        if (a != null)
+        Texture2D noiseMap = GetInputValue<Texture2D>("Noise");
+        Color[] getPixels = noiseMap.GetPixels();
+        if (noiseMap != null)
         {
-            float maxValue = 0;
-            maxValue = getPixels.Max(x => x.r);
-
+            float maxValue = getPixels.Max(x => x.r);
             float factor = 1f / maxValue; 
 
             for (int y = 0; y < width; y++)
@@ -187,6 +240,25 @@ public class ProcessNode : Node
                     float sample = getPixels[y * width + x].r * factor;
                     pixels[y * width + x] = new Color(sample, sample, sample);
                 }
+            }
+        }
+    }
+
+    public void Maximize3DNoises()
+    {
+        Vector4[] worldSpacePoints = GetInputValue<Vector4[]>("inputPoint");
+
+        Texture2D noiseMap = GetInputValue<Texture2D>("Noise");
+        Color[] getPixels = noiseMap.GetPixels();
+
+        if (noiseMap != null && worldSpacePoints != null)
+        {
+            float maxValue = getPixels.Max(x => x.r);
+            float factor = 1f / maxValue;
+
+            for (int i = 0; i < worldSpacePoints.Length; i++)
+            {
+                output[i] = new Vector4(worldSpacePoints[i].x, worldSpacePoints[i].y, worldSpacePoints[i].z, worldSpacePoints[i].w * factor);
             }
         }
     }

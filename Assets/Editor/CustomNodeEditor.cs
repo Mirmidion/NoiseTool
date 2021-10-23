@@ -284,6 +284,14 @@ public class CustomNodeEditor : NodeEditor
                 EditorGUI.DrawPreviewTexture(new Rect(new Vector2(30, 95), new Vector2(150, 150)), node.noise);
             }
         }
+        else if (baseNode.GetType() == typeof(OutputNode))
+        {
+            OutputNode node = (OutputNode)baseNode;
+            if (GUILayout.Button("Serialize"))
+            {
+                node.GetPoint();
+            }
+        }
     }
 
     public void SinglePointInput(Node node, bool single, bool dual)

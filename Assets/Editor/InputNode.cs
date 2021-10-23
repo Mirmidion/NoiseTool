@@ -14,6 +14,6 @@ public class InputNode : Node
         {
             return input;
         }
-        return null;
+        return Vector3.down;
     }
 }
