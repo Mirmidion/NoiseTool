@@ -19,9 +19,9 @@ MonoBehaviour:
     - noise
     - Noise1
     - Noise2
-    - inputPoint
+    - Input Port 2
     - outputPoint
-    - inputPoint2
+    - Input Port 1
     values:
     - _fieldName: noise
       _node: {fileID: -8813909758075967766}
@@ -59,7 +59,7 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 1
-    - _fieldName: inputPoint
+    - _fieldName: Input Port 2
       _node: {fileID: -8813909758075967766}
       _typeQualifiedName: UnityEngine.Vector4[], UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
@@ -70,17 +70,20 @@ MonoBehaviour:
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
-      _dynamic: 0
+      _dynamic: 1
     - _fieldName: outputPoint
       _node: {fileID: -8813909758075967766}
       _typeQualifiedName: UnityEngine.Vector4[], UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
-      connections: []
+      connections:
+      - fieldName: Input Port 2
+        node: {fileID: 5377258989816840277}
+        reroutePoints: []
       _direction: 1
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-    - _fieldName: inputPoint2
+    - _fieldName: Input Port 1
       _node: {fileID: -8813909758075967766}
       _typeQualifiedName: UnityEngine.Vector4[], UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
@@ -91,18 +94,8 @@ MonoBehaviour:
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
-      _dynamic: 0
+      _dynamic: 1
   noise: {fileID: 0}
-  inputPoint:
-  - {x: -7.3135376, y: 7.58e-43, z: 1.8494648e+31, w: 1.42e-43}
-  - {x: -7.34079e-40, y: 7.57e-43, z: 4.6e-44, w: 0}
-  - {x: -7.3135376, y: 7.58e-43, z: -7.3135834, w: 7.58e-43}
-  - {x: -7.34123e-40, y: 7.57e-43, z: 6.9e-44, w: 1.772e-41}
-  inputPoint2:
-  - {x: -7.3135376, y: 7.58e-43, z: 1.8494648e+31, w: 1.42e-43}
-  - {x: -7.34079e-40, y: 7.57e-43, z: 4.6e-44, w: 0}
-  - {x: -7.3135376, y: 7.58e-43, z: -7.3135834, w: 7.58e-43}
-  - {x: -7.34123e-40, y: 7.57e-43, z: 6.9e-44, w: 1.772e-41}
   outputPoint:
   - {x: -7.3135376, y: 7.58e-43, z: 1.8494648e+31, w: 1.42e-43}
   - {x: -7.34079e-40, y: 7.57e-43, z: 4.6e-44, w: 0}
@@ -136,9 +129,8 @@ MonoBehaviour:
     keys:
     - noise
     - Noise
-    - inputPoint
     - outputPoint
-    - inputPoint2
+    - Input Port
     values:
     - _fieldName: noise
       _node: {fileID: -7836106094104953423}
@@ -164,44 +156,31 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 1
-    - _fieldName: inputPoint
-      _node: {fileID: -7836106094104953423}
-      _typeQualifiedName: UnityEngine.Vector4[], UnityEngine.CoreModule, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
-      connections: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
     - _fieldName: outputPoint
       _node: {fileID: -7836106094104953423}
       _typeQualifiedName: UnityEngine.Vector4[], UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
-      connections: []
+      connections:
+      - fieldName: Input Port
+        node: {fileID: -2532594785090727592}
+        reroutePoints: []
       _direction: 1
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-    - _fieldName: inputPoint2
+    - _fieldName: Input Port
       _node: {fileID: -7836106094104953423}
       _typeQualifiedName: UnityEngine.Vector4[], UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
-      connections: []
+      connections:
+      - fieldName: outputPoint
+        node: {fileID: 4339791290986488845}
+        reroutePoints: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
-      _dynamic: 0
+      _dynamic: 1
   noise: {fileID: 0}
-  inputPoint:
-  - {x: -7.3135376, y: 7.58e-43, z: 1.8494648e+31, w: 1.42e-43}
-  - {x: -7.34079e-40, y: 7.57e-43, z: 4.6e-44, w: 0}
-  - {x: -7.3135376, y: 7.58e-43, z: -7.3135834, w: 7.58e-43}
-  - {x: -7.34123e-40, y: 7.57e-43, z: 6.9e-44, w: 1.42e-43}
-  inputPoint2:
-  - {x: -7.3135376, y: 7.58e-43, z: 1.8494648e+31, w: 1.42e-43}
-  - {x: -7.34079e-40, y: 7.57e-43, z: 4.6e-44, w: 0}
-  - {x: -7.3135376, y: 7.58e-43, z: -7.3135834, w: 7.58e-43}
-  - {x: -7.34123e-40, y: 7.57e-43, z: 6.9e-44, w: 1.42e-43}
   outputPoint:
   - {x: -7.3135376, y: 7.58e-43, z: 1.8494648e+31, w: 1.42e-43}
   - {x: -7.34079e-40, y: 7.57e-43, z: 4.6e-44, w: 0}
@@ -214,7 +193,7 @@ MonoBehaviour:
   offset: 0
   min: 0
   max: 1
-  scaleFirstHalf: 1
+  scaleFirstHalf: 1.12
   scaleSecondHalf: 1
   multiplier: 1
 --- !u!114 &-6262771135912656579
@@ -265,7 +244,10 @@ MonoBehaviour:
       _node: {fileID: -6262771135912656579}
       _typeQualifiedName: UnityEngine.Vector4[], UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
-      connections: []
+      connections:
+      - fieldName: Input Port 1
+        node: {fileID: -2073021579089513579}
+        reroutePoints: []
       _direction: 1
       _connectionType: 0
       _typeConstraint: 0
@@ -347,7 +329,7 @@ MonoBehaviour:
       _typeQualifiedName: UnityEngine.Vector4[], UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
       connections:
-      - fieldName: inputPoint2
+      - fieldName: Input Port 1
         node: {fileID: -8813909758075967766}
         reroutePoints: []
       _direction: 1
@@ -400,9 +382,8 @@ MonoBehaviour:
     keys:
     - noise
     - Noise
-    - inputPoint
     - outputPoint
-    - inputPoint2
+    - Input Port
     values:
     - _fieldName: noise
       _node: {fileID: -4524473312196541486}
@@ -428,15 +409,6 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 1
-    - _fieldName: inputPoint
-      _node: {fileID: -4524473312196541486}
-      _typeQualifiedName: UnityEngine.Vector4[], UnityEngine.CoreModule, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
-      connections: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
     - _fieldName: outputPoint
       _node: {fileID: -4524473312196541486}
       _typeQualifiedName: UnityEngine.Vector4[], UnityEngine.CoreModule, Version=0.0.0.0,
@@ -449,26 +421,19 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-    - _fieldName: inputPoint2
+    - _fieldName: Input Port
       _node: {fileID: -4524473312196541486}
       _typeQualifiedName: UnityEngine.Vector4[], UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
-      connections: []
+      connections:
+      - fieldName: outputPoint
+        node: {fileID: -2532594785090727592}
+        reroutePoints: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
-      _dynamic: 0
+      _dynamic: 1
   noise: {fileID: 0}
-  inputPoint:
-  - {x: -7.3135376, y: 7.58e-43, z: 1.8494648e+31, w: 1.42e-43}
-  - {x: -7.34079e-40, y: 7.57e-43, z: 4.6e-44, w: 0}
-  - {x: -7.3135376, y: 7.58e-43, z: -7.3135834, w: 7.58e-43}
-  - {x: -7.34123e-40, y: 7.57e-43, z: 6.9e-44, w: 1.42e-43}
-  inputPoint2:
-  - {x: -7.3135376, y: 7.58e-43, z: 1.8494648e+31, w: 1.42e-43}
-  - {x: -7.34079e-40, y: 7.57e-43, z: 4.6e-44, w: 0}
-  - {x: -7.3135376, y: 7.58e-43, z: -7.3135834, w: 7.58e-43}
-  - {x: -7.34123e-40, y: 7.57e-43, z: 6.9e-44, w: 1.42e-43}
   outputPoint:
   - {x: -7.3135376, y: 7.58e-43, z: 1.8494648e+31, w: 1.42e-43}
   - {x: -7.34079e-40, y: 7.57e-43, z: 4.6e-44, w: 0}
@@ -611,9 +576,8 @@ MonoBehaviour:
     keys:
     - noise
     - Noise
-    - inputPoint
     - outputPoint
-    - inputPoint2
+    - Input Port
     values:
     - _fieldName: noise
       _node: {fileID: -2532594785090727592}
@@ -639,44 +603,31 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 1
-    - _fieldName: inputPoint
-      _node: {fileID: -2532594785090727592}
-      _typeQualifiedName: UnityEngine.Vector4[], UnityEngine.CoreModule, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
-      connections: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
     - _fieldName: outputPoint
       _node: {fileID: -2532594785090727592}
       _typeQualifiedName: UnityEngine.Vector4[], UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
-      connections: []
+      connections:
+      - fieldName: Input Port
+        node: {fileID: -4524473312196541486}
+        reroutePoints: []
       _direction: 1
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-    - _fieldName: inputPoint2
+    - _fieldName: Input Port
       _node: {fileID: -2532594785090727592}
       _typeQualifiedName: UnityEngine.Vector4[], UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
-      connections: []
+      connections:
+      - fieldName: outputPoint
+        node: {fileID: -7836106094104953423}
+        reroutePoints: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
-      _dynamic: 0
+      _dynamic: 1
   noise: {fileID: 0}
-  inputPoint:
-  - {x: -7.3135376, y: 7.58e-43, z: 1.8494648e+31, w: 1.42e-43}
-  - {x: -7.34079e-40, y: 7.57e-43, z: 4.6e-44, w: 0}
-  - {x: -7.3135376, y: 7.58e-43, z: -7.3135834, w: 7.58e-43}
-  - {x: -7.34123e-40, y: 7.57e-43, z: 6.9e-44, w: 1.000012}
-  inputPoint2:
-  - {x: -7.3135376, y: 7.58e-43, z: 1.8494648e+31, w: 1.42e-43}
-  - {x: -7.34079e-40, y: 7.57e-43, z: 4.6e-44, w: 0}
-  - {x: -7.3135376, y: 7.58e-43, z: -7.3135834, w: 7.58e-43}
-  - {x: -7.34123e-40, y: 7.57e-43, z: 6.9e-44, w: 1.000012}
   outputPoint:
   - {x: -7.3135376, y: 7.58e-43, z: 1.8494648e+31, w: 1.42e-43}
   - {x: -7.34079e-40, y: 7.57e-43, z: 4.6e-44, w: 0}
@@ -767,9 +718,9 @@ MonoBehaviour:
     - noise
     - Noise1
     - Noise2
-    - inputPoint
+    - Input Port 2
     - outputPoint
-    - inputPoint2
+    - Input Port 1
     values:
     - _fieldName: noise
       _node: {fileID: -2073021579089513579}
@@ -807,52 +758,51 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 1
-    - _fieldName: inputPoint
+    - _fieldName: Input Port 2
       _node: {fileID: -2073021579089513579}
       _typeQualifiedName: UnityEngine.Vector4[], UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
-      connections: []
+      connections:
+      - fieldName: outputPoint
+        node: {fileID: 2286299359069459223}
+        reroutePoints: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
-      _dynamic: 0
+      _dynamic: 1
     - _fieldName: outputPoint
       _node: {fileID: -2073021579089513579}
       _typeQualifiedName: UnityEngine.Vector4[], UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
-      connections: []
+      connections:
+      - fieldName: Input Port
+        node: {fileID: 4339791290986488845}
+        reroutePoints: []
       _direction: 1
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-    - _fieldName: inputPoint2
+    - _fieldName: Input Port 1
       _node: {fileID: -2073021579089513579}
       _typeQualifiedName: UnityEngine.Vector4[], UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
-      connections: []
+      connections:
+      - fieldName: outputPoint
+        node: {fileID: -6262771135912656579}
+        reroutePoints: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
-      _dynamic: 0
+      _dynamic: 1
   noise: {fileID: 0}
-  inputPoint:
-  - {x: -7.3135376, y: 7.58e-43, z: 1.8494648e+31, w: 1.42e-43}
-  - {x: -7.34079e-40, y: 7.57e-43, z: 4.6e-44, w: 0}
-  - {x: -7.3135376, y: 7.58e-43, z: -7.3135834, w: 7.58e-43}
-  - {x: -7.34123e-40, y: 7.57e-43, z: 6.9e-44, w: 1.772e-41}
-  inputPoint2:
-  - {x: -7.3135376, y: 7.58e-43, z: 1.8494648e+31, w: 1.42e-43}
-  - {x: -7.34079e-40, y: 7.57e-43, z: 4.6e-44, w: 0}
-  - {x: -7.3135376, y: 7.58e-43, z: -7.3135834, w: 7.58e-43}
-  - {x: -7.34123e-40, y: 7.57e-43, z: 6.9e-44, w: 1.772e-41}
   outputPoint:
   - {x: -7.3135376, y: 7.58e-43, z: 1.8494648e+31, w: 1.42e-43}
   - {x: -7.34079e-40, y: 7.57e-43, z: 4.6e-44, w: 0}
   - {x: -7.3135376, y: 7.58e-43, z: -7.3135834, w: 7.58e-43}
   - {x: -7.34123e-40, y: 7.57e-43, z: 6.9e-44, w: 1.772e-41}
   selectedMode: 0
-  noise1Weight: 79
-  noise2Weight: 21
+  noise1Weight: 78
+  noise2Weight: 22
   size: 1
   offset: 0
   min: 0
@@ -941,9 +891,8 @@ MonoBehaviour:
     keys:
     - noise
     - Noise
-    - inputPoint
     - outputPoint
-    - inputPoint2
+    - Input Port
     values:
     - _fieldName: noise
       _node: {fileID: 2286299359069459223}
@@ -968,48 +917,38 @@ MonoBehaviour:
       - fieldName: noise
         node: {fileID: 5377258989816840277}
         reroutePoints: []
+      - fieldName: noise
+        node: {fileID: 5377258989816840277}
+        reroutePoints: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 1
-    - _fieldName: inputPoint
-      _node: {fileID: 2286299359069459223}
-      _typeQualifiedName: UnityEngine.Vector4[], UnityEngine.CoreModule, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
-      connections: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
     - _fieldName: outputPoint
       _node: {fileID: 2286299359069459223}
       _typeQualifiedName: UnityEngine.Vector4[], UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
-      connections: []
+      connections:
+      - fieldName: Input Port 2
+        node: {fileID: -2073021579089513579}
+        reroutePoints: []
       _direction: 1
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-    - _fieldName: inputPoint2
+    - _fieldName: Input Port
       _node: {fileID: 2286299359069459223}
       _typeQualifiedName: UnityEngine.Vector4[], UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
-      connections: []
+      connections:
+      - fieldName: outputPoint
+        node: {fileID: 5377258989816840277}
+        reroutePoints: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
-      _dynamic: 0
+      _dynamic: 1
   noise: {fileID: 0}
-  inputPoint:
-  - {x: -7.3135376, y: 7.58e-43, z: 1.8494648e+31, w: 1.42e-43}
-  - {x: -7.3159e-40, y: 7.57e-43, z: 4.6e-44, w: 0}
-  - {x: -7.3135376, y: 7.58e-43, z: -7.3135834, w: 7.58e-43}
-  - {x: -7.31635e-40, y: 7.57e-43, z: 6.9e-44, w: 1.42e-43}
-  inputPoint2:
-  - {x: -7.3135376, y: 7.58e-43, z: 1.8494648e+31, w: 1.42e-43}
-  - {x: -7.3159e-40, y: 7.57e-43, z: 4.6e-44, w: 0}
-  - {x: -7.3135376, y: 7.58e-43, z: -7.3135834, w: 7.58e-43}
-  - {x: -7.31635e-40, y: 7.57e-43, z: 6.9e-44, w: 1.42e-43}
   outputPoint:
   - {x: -7.3135376, y: 7.58e-43, z: 1.8494648e+31, w: 1.42e-43}
   - {x: -7.3159e-40, y: 7.57e-43, z: 4.6e-44, w: 0}
@@ -1019,7 +958,7 @@ MonoBehaviour:
   noise1Weight: 50
   noise2Weight: 50
   size: 1
-  offset: 0.43
+  offset: 0.4
   min: 0
   max: 1
   scaleFirstHalf: 1
@@ -1043,9 +982,8 @@ MonoBehaviour:
     keys:
     - noise
     - Noise
-    - inputPoint
     - outputPoint
-    - inputPoint2
+    - Input Port
     values:
     - _fieldName: noise
       _node: {fileID: 4339791290986488845}
@@ -1071,44 +1009,31 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 1
-    - _fieldName: inputPoint
-      _node: {fileID: 4339791290986488845}
-      _typeQualifiedName: UnityEngine.Vector4[], UnityEngine.CoreModule, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
-      connections: []
-      _direction: 0
-      _connectionType: 0
-      _typeConstraint: 0
-      _dynamic: 0
     - _fieldName: outputPoint
       _node: {fileID: 4339791290986488845}
       _typeQualifiedName: UnityEngine.Vector4[], UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
-      connections: []
+      connections:
+      - fieldName: Input Port
+        node: {fileID: -7836106094104953423}
+        reroutePoints: []
       _direction: 1
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-    - _fieldName: inputPoint2
+    - _fieldName: Input Port
       _node: {fileID: 4339791290986488845}
       _typeQualifiedName: UnityEngine.Vector4[], UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
-      connections: []
+      connections:
+      - fieldName: outputPoint
+        node: {fileID: -2073021579089513579}
+        reroutePoints: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
-      _dynamic: 0
+      _dynamic: 1
   noise: {fileID: 0}
-  inputPoint:
-  - {x: -7.3135376, y: 7.58e-43, z: 1.8494648e+31, w: 1.42e-43}
-  - {x: -7.34079e-40, y: 7.57e-43, z: 4.6e-44, w: 0}
-  - {x: -7.3135376, y: 7.58e-43, z: -7.3135834, w: 7.58e-43}
-  - {x: -7.34123e-40, y: 7.57e-43, z: 6.9e-44, w: 1.42e-43}
-  inputPoint2:
-  - {x: -7.3135376, y: 7.58e-43, z: 1.8494648e+31, w: 1.42e-43}
-  - {x: -7.34079e-40, y: 7.57e-43, z: 4.6e-44, w: 0}
-  - {x: -7.3135376, y: 7.58e-43, z: -7.3135834, w: 7.58e-43}
-  - {x: -7.34123e-40, y: 7.57e-43, z: 6.9e-44, w: 1.42e-43}
   outputPoint:
   - {x: -7.3135376, y: 7.58e-43, z: 1.8494648e+31, w: 1.42e-43}
   - {x: -7.34079e-40, y: 7.57e-43, z: 4.6e-44, w: 0}
@@ -1172,7 +1097,10 @@ MonoBehaviour:
       _node: {fileID: 4379209155000562754}
       _typeQualifiedName: UnityEngine.Vector4[], UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
-      connections: []
+      connections:
+      - fieldName: Input Port 1
+        node: {fileID: 5377258989816840277}
+        reroutePoints: []
       _direction: 1
       _connectionType: 0
       _typeConstraint: 0
@@ -1268,9 +1196,9 @@ MonoBehaviour:
     - noise
     - Noise1
     - Noise2
-    - inputPoint
+    - Input Port 2
     - outputPoint
-    - inputPoint2
+    - Input Port 1
     values:
     - _fieldName: noise
       _node: {fileID: 5377258989816840277}
@@ -1308,44 +1236,43 @@ MonoBehaviour:
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 1
-    - _fieldName: inputPoint
+    - _fieldName: Input Port 2
       _node: {fileID: 5377258989816840277}
       _typeQualifiedName: UnityEngine.Vector4[], UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
-      connections: []
+      connections:
+      - fieldName: outputPoint
+        node: {fileID: -8813909758075967766}
+        reroutePoints: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
-      _dynamic: 0
+      _dynamic: 1
     - _fieldName: outputPoint
       _node: {fileID: 5377258989816840277}
       _typeQualifiedName: UnityEngine.Vector4[], UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
-      connections: []
+      connections:
+      - fieldName: Input Port
+        node: {fileID: 2286299359069459223}
+        reroutePoints: []
       _direction: 1
       _connectionType: 0
       _typeConstraint: 0
       _dynamic: 0
-    - _fieldName: inputPoint2
+    - _fieldName: Input Port 1
       _node: {fileID: 5377258989816840277}
       _typeQualifiedName: UnityEngine.Vector4[], UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
-      connections: []
+      connections:
+      - fieldName: outputPoint
+        node: {fileID: 4379209155000562754}
+        reroutePoints: []
       _direction: 0
       _connectionType: 0
       _typeConstraint: 0
-      _dynamic: 0
+      _dynamic: 1
   noise: {fileID: 0}
-  inputPoint:
-  - {x: -7.3135376, y: 7.58e-43, z: 1.8494648e+31, w: 1.42e-43}
-  - {x: -7.34079e-40, y: 7.57e-43, z: 4.6e-44, w: 0}
-  - {x: -7.3135376, y: 7.58e-43, z: -7.3135834, w: 7.58e-43}
-  - {x: -7.34123e-40, y: 7.57e-43, z: 6.9e-44, w: 0.5007537}
-  inputPoint2:
-  - {x: -7.3135376, y: 7.58e-43, z: 1.8494648e+31, w: 1.42e-43}
-  - {x: -7.34079e-40, y: 7.57e-43, z: 4.6e-44, w: 0}
-  - {x: -7.3135376, y: 7.58e-43, z: -7.3135834, w: 7.58e-43}
-  - {x: -7.34123e-40, y: 7.57e-43, z: 6.9e-44, w: 0.5007537}
   outputPoint:
   - {x: -7.3135376, y: 7.58e-43, z: 1.8494648e+31, w: 1.42e-43}
   - {x: -7.34079e-40, y: 7.57e-43, z: 4.6e-44, w: 0}
@@ -1410,7 +1337,7 @@ MonoBehaviour:
       _typeQualifiedName: UnityEngine.Vector4[], UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
       connections:
-      - fieldName: inputPoint
+      - fieldName: Input Port 2
         node: {fileID: -8813909758075967766}
         reroutePoints: []
       _direction: 1

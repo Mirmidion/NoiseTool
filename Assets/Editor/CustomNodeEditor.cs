@@ -165,8 +165,6 @@ public class CustomNodeEditor : NodeEditor
                 CreateFloatField(node, "min", "min",0f,1f);
                 CreateFloatField(node, "max", "max", 0f, 1f);
 
-                
-
                 if (node.noise != null)
                 {
                     for (int spaces = 0; spaces < 30; spaces++)
@@ -287,7 +285,7 @@ public class CustomNodeEditor : NodeEditor
         else if (baseNode.GetType() == typeof(OutputNode))
         {
             OutputNode node = (OutputNode)baseNode;
-            if (GUILayout.Button("Serialize"))
+            if (GUILayout.Button("Get Point"))
             {
                 node.GetPoint();
             }
@@ -299,6 +297,7 @@ public class CustomNodeEditor : NodeEditor
         if (!single && !node.HasPort("Input Port"))
         {
             NodePort temp = node.AddDynamicInput(typeof(Vector4[]), Node.ConnectionType.Multiple, Node.TypeConstraint.None, "Input Port");
+            
             inputList.Add(temp);
         }
         if (dual)
@@ -333,7 +332,7 @@ public class CustomNodeEditor : NodeEditor
         }
     }
 
-    public void DoublePointInput(Node node, bool single, bool dual)
+    public void DoublePointInput(Node node, bool single, bool first, bool second)
     {
         if (single)
         {
@@ -351,12 +350,12 @@ public class CustomNodeEditor : NodeEditor
                 inputList.RemoveAt(index);
             }
         }
-        if (!dual && !node.HasPort("Input Port 1") )
+        if (!first && !node.HasPort("Input Port 1") )
         {
             NodePort temp = node.AddDynamicInput(typeof(Vector4[]), Node.ConnectionType.Multiple, Node.TypeConstraint.None, "Input Port 1");
             inputList.Add(temp);
         }
-        if (!dual &&  !node.HasPort("Input Port 2"))
+        if (!second &&  !node.HasPort("Input Port 2"))
         {
             NodePort temp1 = node.AddDynamicInput(typeof(Vector4[]), Node.ConnectionType.Multiple, Node.TypeConstraint.None, "Input Port 2");
             inputList.Add(temp1);
@@ -462,6 +461,9 @@ public class CustomNodeEditor : NodeEditor
         bool noise = false;
         bool noise1 = false;
         bool noise2 = false;
+        bool input = false;
+        bool input1 = false;
+        bool input2 = false;
         foreach (NodePort port in inputList)
         {
             switch (port.fieldName)
@@ -481,6 +483,21 @@ public class CustomNodeEditor : NodeEditor
                         noise2 = true;
                         break;
                     }
+                case "Input Port":
+                {
+                    input = true;
+                    break;
+                }
+                case "Input Port 1":
+                {
+                    input1 = true;
+                    break;
+                }
+                case "Input Port 2":
+                {
+                    input2 = true;
+                    break;
+                }
             }
         }
 
@@ -489,31 +506,37 @@ public class CustomNodeEditor : NodeEditor
             case ProcessNode.mode.Add:
                 {
                     TwoNoiseInputs(node, noise,noise1,noise2);
+                    DoublePointInput(node, input, input1, input2);
                     break;
                 }
             case ProcessNode.mode.Shift:
                 {
                     SingleNoiseInput(node, noise, noise1, noise2);
+                    SinglePointInput(node, input, input1 && input2);
                     break;
                 }
             case ProcessNode.mode.MinMax:
                 {
                     SingleNoiseInput(node, noise, noise1, noise2);
+                    SinglePointInput(node, input, input1 && input2);
                     break;
                 }
             case ProcessNode.mode.Scale:
                 {
                     SingleNoiseInput(node, noise, noise1, noise2);
+                    SinglePointInput(node, input, input1 && input2);
                     break;
                 }
             case ProcessNode.mode.Maximize:
                 {
                     SingleNoiseInput(node, noise, noise1, noise2);
+                    SinglePointInput(node, input, input1 && input2);
                     break;
                 }
             case ProcessNode.mode.Interpolate:
                 {
                     SingleNoiseInput(node, noise, noise1, noise2);
+                    SinglePointInput(node, input, input1 && input2);
                     break;
                 }
                 //case AddNode.mode.Multiply:

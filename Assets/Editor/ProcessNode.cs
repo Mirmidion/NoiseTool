@@ -11,8 +11,8 @@ public class ProcessNode : Node
 
     [Output] public Texture2D noise;
 
-    [Input] public Vector4[] inputPoint;
-    [Input] public Vector4[] inputPoint2;
+    //[Input] public Vector4[] inputPoint;
+    //[Input] public Vector4[] inputPoint2;
     [Output] public Vector4[] outputPoint;
 
     Color[] pixels;
@@ -212,8 +212,8 @@ public class ProcessNode : Node
 
     public void Add3DNoises()
     {
-        Vector4[] worldSpacePoints = GetInputValue<Vector4[]>("inputPoint");
-        Vector4[] worldSpacePointsToAdd = GetInputValue<Vector4[]>("inputPoint2");
+        Vector4[] worldSpacePoints = GetInputValue<Vector4[]>("Input Point 1");
+        Vector4[] worldSpacePointsToAdd = GetInputValue<Vector4[]>("Input Point 2");
         if (worldSpacePoints != null && worldSpacePointsToAdd != null)
         {
             for (int i = 0; i < worldSpacePoints.Length; i++)
@@ -246,7 +246,7 @@ public class ProcessNode : Node
 
     public void Maximize3DNoises()
     {
-        Vector4[] worldSpacePoints = GetInputValue<Vector4[]>("inputPoint");
+        Vector4[] worldSpacePoints = GetInputValue<Vector4[]>("Input Point");
 
         Texture2D noiseMap = GetInputValue<Texture2D>("Noise");
         Color[] getPixels = noiseMap.GetPixels();
@@ -328,6 +328,12 @@ public class ProcessNode : Node
 
     }
 
+    public void Interpolate3D()
+    {
+        Vector4[] worldSpacePoints = GetInputValue<Vector4[]>("Input Point");
+
+    }
+
     public void MinMaxNoise()
     {
         Texture2D a = GetInputValue<Texture2D>("Noise");
@@ -343,6 +349,12 @@ public class ProcessNode : Node
                 }
             }
         }
+    }
+
+    public void MinMax3DNoise()
+    {
+        Vector4[] worldSpacePoints = GetInputValue<Vector4[]>("Input Point");
+
     }
 
     public void ScaleNoise()
@@ -368,6 +380,12 @@ public class ProcessNode : Node
                 }
             }
         }
+    }
+
+    public void Scale3DNoise()
+    {
+        Vector4[] worldSpacePoints = GetInputValue<Vector4[]>("Input Point");
+
     }
 
     public void MultiplyNoise()
@@ -398,6 +416,12 @@ public class ProcessNode : Node
                 }
             }
         }
+    }
+
+    public void Multiply3DNoise()
+    {
+        Vector4[] worldSpacePoints = GetInputValue<Vector4[]>("Input Point");
+
     }
 
     public void ShiftNoise()
@@ -445,6 +469,12 @@ public class ProcessNode : Node
                 }
             }
         }
+    }
+
+    public void Shift3DNoise()
+    {
+        Vector4[] worldSpacePoints = GetInputValue<Vector4[]>("Input Point");
+
     }
 
     public class Multiplier
